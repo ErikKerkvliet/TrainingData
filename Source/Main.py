@@ -1,6 +1,6 @@
 import Convert
 import RequestData
-import Image
+import Make
 
 
 class Main:
@@ -8,13 +8,17 @@ class Main:
     def __init__(self):
         self.convert = Convert.Convert()
         self.request = RequestData.RequestData()
-        self.image = Image.Image()
+        self.make = Make.Make()
 
     def start(self):
         while True:
             response = self.request.ticker()
             training_data = self.convert.convert(response)
-            self.image.make(training_data)
+
+            self.make.switch_count()
+            self.make.image(training_data)
+            self.make.json(training_data)
+
             self.request.reset()
 
 
@@ -25,4 +29,3 @@ print('Finished')
 print('Shutting down')
 
 exit()
-
