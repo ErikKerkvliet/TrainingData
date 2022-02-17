@@ -8,7 +8,7 @@ class Convert:
     def __init__(self):
         self.old_length = 0
 
-    def convert(self, coins_data):
+    def image(self, coins_data):
         training_data = []
         for coin_data in coins_data:
             coin_data = self.handle_coin(coins_data[coin_data])
@@ -41,4 +41,14 @@ class Convert:
             self.old_length = length
         if length != self.old_length:
             return
+        return line_data
+
+    def json(self, coins_data):
+        line_data = {}
+        for coin_data in coins_data:
+            line_data[coin_data] = []
+
+            for data in coins_data[coin_data]:
+                line_data[coin_data].append(data['price'])
+
         return line_data

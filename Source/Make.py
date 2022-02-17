@@ -16,29 +16,33 @@ class Make:
 
         img = Img.fromarray(data, 'L')
 
-        filename = f"../TrainingData/Images/{datetime.now().strftime('%d-%m-%Y')}_{self.count}.png"
+        filename = f"./Data/Images/{datetime.now().strftime('%d-%m-%Y')}_{self.count}.png"
 
         img.save(filename)
-        img.show()
+
+        print(f'Saved image to {filename}')
 
     def json(self, training_data):
         json = dumps(training_data)
 
-        filename = f"../TrainingData/Json/{datetime.now().strftime('%d-%m-%Y')}_{self.count}"
+        filename = f"./Data/Json/{datetime.now().strftime('%d-%m-%Y')}_{self.count}"
 
         f = open(filename, "w")
+
         f.write(json)
+
+        print(f'Saved file to {filename}')
 
     def switch_count(self):
         self.count = 2 if self.count == 1 else 1
 
     @staticmethod
     def directories():
-        if not path.isdir('../TrainingData'):
-            makedirs('../TrainingData')
+        if not path.isdir('./Data'):
+            makedirs('./Data')
 
-        if not path.isdir('../TrainingData/Images'):
-            makedirs('../TrainingData')
+        if not path.isdir('./Data/Images'):
+            makedirs('./Data/Images')
 
-        if not path.isdir('../TrainingData/Json'):
-            makedirs('../TrainingData/Json')
+        if not path.isdir('./Data/Json'):
+            makedirs('./Data/Json')

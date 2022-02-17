@@ -13,11 +13,12 @@ class Main:
     def start(self):
         while True:
             response = self.request.ticker()
-            training_data = self.convert.convert(response)
+            image_data = self.convert.image(response)
+            json_data = self.convert.json(response)
 
             self.make.switch_count()
-            self.make.image(training_data)
-            self.make.json(training_data)
+            self.make.image(image_data)
+            self.make.json(json_data)
 
             self.request.reset()
 
