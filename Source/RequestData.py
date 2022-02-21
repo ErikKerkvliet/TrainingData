@@ -14,7 +14,7 @@ class RequestData:
 
         times = 0
         error = False
-        while times < 540:
+        while times < 1080:
             try:
                 if times % 30 == 0 and times != 0:
                     connection.close()
@@ -49,6 +49,9 @@ class RequestData:
             except http.client.NotConnected:
                 print('Exception: disconnected')
                 connection = http.client.HTTPSConnection("api.bitpanda.com")
+            except KeyboardInterrupt:
+                print('Keyboard interrupt')
+                return self.coins
             except BaseException as e:
                 if error:
                     print(e)
