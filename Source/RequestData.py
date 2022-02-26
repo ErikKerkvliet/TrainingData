@@ -14,7 +14,7 @@ class RequestData:
 
         times = 0
         error = False
-        while times < 1080:
+        while times < 1:
             try:
                 if times % 30 == 0 and times != 0:
                     connection.close()
@@ -41,6 +41,7 @@ class RequestData:
                     price = float(coins_data[coin]['EUR'])
                     self.coins[coin].append({
                         'price': price,
+                        'percentage': 0,
                         'difference': self.coins[coin][-1]['price'] - price
                     })
                 times += 1

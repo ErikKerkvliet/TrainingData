@@ -15,8 +15,10 @@ class Convert:
             training_data.append(coin_data)
         return training_data
 
-    def handle_coin(self, coin_data):
+    @staticmethod
+    def handle_coin(coin_data):
         line_data = []
+        old_length = 0
         for data in coin_data:
             previous_price = data['price'] + data['difference']
             one_percent = previous_price / 100
@@ -37,13 +39,14 @@ class Convert:
             line_data.append(color)
 
         length = len(line_data)
-        if self.old_length == 0:
-            self.old_length = length
-        if length != self.old_length:
-            return
+        if old_length == 0:
+            old_length = length
+        if length != old_length:
+            return False
         return line_data
 
-    def json(self, coins_data):
+    @staticmethod
+    def json(coins_data):
         line_data = {}
         for coin_data in coins_data:
             line_data[coin_data] = []
