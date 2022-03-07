@@ -1,20 +1,24 @@
 from Convert import Convert
 from Make import Make
+from datetime import datetime
+from Append import Append
 
 import http.client
 import json
 import time
-from datetime import datetime
 
+MODULI = [105, 255, 545, 1085, 2165]
+RESULT_TIME = 5
+ACTIONS = [0, 127, 255]
+COINS = ['BTC', 'ETH', 'BCH', 'BNB', 'EGLD', 'MKR', 'AAVE', 'KSM', 'YFI']
 
 class Ticker:
 
     def __init__(self):
         self.coins = {}
         self.time = ''
-        self.timer = 80
-        self.moduli = [100, 250, 540, 1080, 2160]
-        Make.directories(self.moduli)
+        self.timer = 5
+        Make.directories(MODULI)
 
     def ticker(self):
         connection = http.client.HTTPSConnection("api.bitpanda.com")
@@ -55,8 +59,9 @@ class Ticker:
                 }
 
                 self.coins[coin].append(coin_dat)
-
-            for modulo in self.moduli:
+            # print(self.coins)
+            # exit()
+            for modulo in MODULI:
                 if counter % modulo == 0:
                     converted = []
                     for coin in coins_data.keys():
@@ -70,14 +75,21 @@ class Ticker:
             if counter == 2160:
                 counter = 0
                 self.coins = {}
-                converted = []
             time.sleep(self.timer)
 
     def save_image(self, data, width):
         path = f"./Data/Images/{width}/"
         self.time = datetime.now().strftime('%d-%m-%Y %H:%M:%S')
         filename = path + self.time
-        Make.image(data, filename)
+
+        for coin in data.keys():
+            if coin in COINS:
+                for action in ACTIONS:
+                    data[coin].append(action)
+
+            filename += f'_{coin}'
+            data = Append.actions(data)
+            Make.image(data[-5], filename)
 
     def save_json(self, data, width):
         path = f"./Data/Json/{width}/"
