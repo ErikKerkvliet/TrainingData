@@ -1,25 +1,38 @@
 from Convert import Convert
 from Make import Make
 from datetime import datetime
-from Append import Append
+import Append
+import Label
 
 import http.client
 import json
 import time
 
-MODULI = [105, 255, 545, 1085, 2165]
-RESULT_TIME = 5
+MODULI = [20, 255, 545, 1085, 2165]
+
+# How many steps to wait before calculating labels
+RESULT_TIME = 2
+
+# Grayscale values for actions
 ACTIONS = [0, 127, 255]
+
+# Coins to which actions are being added
 COINS = ['BTC', 'ETH', 'BCH', 'BNB', 'EGLD', 'MKR', 'AAVE', 'KSM', 'YFI']
+
+# Time to wait in loop for getting data
+TIMER = 80
 
 class Ticker:
 
     def __init__(self):
+        self.append = Append.Append()
+        self.label = Label.Label()
         self.coins = {}
         self.time = ''
-        self.timer = 5
+        self.coin_indexes = []
         Make.directories(MODULI)
 
+    # Main function for getting data from cryptocurrency data from bitpanda
     def ticker(self):
         connection = http.client.HTTPSConnection("api.bitpanda.com")
         headers = {'Accept': "application/json"}
@@ -40,12 +53,14 @@ class Ticker:
             if counter == 0:
                 counter += 1
                 print(f'Loop: {counter}')
-                time.sleep(self.timer)
+                time.sleep(TIMER)
                 for coin in coins_data.keys():
                     self.coins[coin] = [{
                         'price': float(coins_data[coin]['EUR']),
                         'difference': 0
                     }]
+
+                self.set_coin_key_indexes()
                 continue
 
             counter += 1
@@ -55,12 +70,11 @@ class Ticker:
                 price = float(coins_data[coin]['EUR'])
                 coin_dat = {
                     'price': float(coins_data[coin]['EUR']),
-                    'difference': self.coins[coin][-1]['price'] - price
+                    'difference': self.coins[coin][-1]['price'] - price,
                 }
-
                 self.coins[coin].append(coin_dat)
-            # print(self.coins)
-            # exit()
+
+            self.time = datetime.now().strftime('%d-%m-%Y %H:%M:%S')
             for modulo in MODULI:
                 if counter % modulo == 0:
                     converted = []
@@ -69,29 +83,17 @@ class Ticker:
                         converted.append(Convert.handle_coin(delimited))
                         if not converted[-1]:
                             del(converted[-1])
-                    self.save_image(converted, modulo)
-                    self.save_json(converted, modulo)
+
+                    self.label.set_coin_data(self.coins)
+                    self.append.actions(converted, self.coin_indexes, modulo)
+                    exit()
 
             if counter == 2160:
                 counter = 0
                 self.coins = {}
-            time.sleep(self.timer)
+            time.sleep(TIMER)
 
-    def save_image(self, data, width):
-        path = f"./Data/Images/{width}/"
-        self.time = datetime.now().strftime('%d-%m-%Y %H:%M:%S')
-        filename = path + self.time
-
-        for coin in data.keys():
+    def set_coin_key_indexes(self):
+        for index, coin in enumerate(self.coins.keys()):
             if coin in COINS:
-                for action in ACTIONS:
-                    data[coin].append(action)
-
-            filename += f'_{coin}'
-            data = Append.actions(data)
-            Make.image(data[-5], filename)
-
-    def save_json(self, data, width):
-        path = f"./Data/Json/{width}/"
-        filename = path + self.time
-        Make.json(data, filename)
+                self.coin_indexes.append(index)

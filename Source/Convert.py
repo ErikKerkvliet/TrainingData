@@ -38,6 +38,9 @@ class Convert:
             color = math.floor(color)
             line_data.append(color)
 
+        # Add action value
+        line_data.append(127)
+
         length = len(line_data)
         if old_length == 0:
             old_length = length
