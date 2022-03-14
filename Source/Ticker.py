@@ -2,31 +2,24 @@ from Convert import Convert
 from Make import Make
 from datetime import datetime
 import Append
-import Label
 
 import http.client
 import json
 import time
 
-MODULI = [20, 255, 545, 1085, 2165]
+MODULI = [7, 255, 545, 1085, 2165]
 
 # How many steps to wait before calculating labels
-RESULT_TIME = 2
-
-# Grayscale values for actions
-ACTIONS = [0, 127, 255]
-
-# Coins to which actions are being added
-COINS = ['BTC', 'ETH', 'BCH', 'BNB', 'EGLD', 'MKR', 'AAVE', 'KSM', 'YFI']
+RESULT_TIME = 5
 
 # Time to wait in loop for getting data
 TIMER = 80
 
 class Ticker:
 
-    def __init__(self):
-        self.append = Append.Append()
-        self.label = Label.Label()
+    def __init__(self, glv):
+        self.glv = glv
+        self.append = Append.Append(self.glv)
         self.coins = {}
         self.time = ''
         self.coin_indexes = []
@@ -84,8 +77,8 @@ class Ticker:
                         if not converted[-1]:
                             del(converted[-1])
 
-                    self.label.set_coin_data(self.coins)
-                    self.append.actions(converted, self.coin_indexes, modulo)
+                    self.glv.label.set_coin_data(self.get_label_coin_data(counter))
+                    self.append.actions(converted, modulo)
                     exit()
 
             if counter == 2160:
@@ -94,6 +87,17 @@ class Ticker:
             time.sleep(TIMER)
 
     def set_coin_key_indexes(self):
+        indexes = []
         for index, coin in enumerate(self.coins.keys()):
-            if coin in COINS:
-                self.coin_indexes.append(index)
+            if coin in self.glv.coins:
+                indexes.append(index)
+
+        self.glv.set_indexes(indexes)
+
+    def get_label_coin_data(self, length):
+        label_coin_data = {}
+        from_index = length - RESULT_TIME
+        for coin in self.coins.keys():
+            label_coin_data[coin] = self.coins[coin][from_index:]
+
+        return label_coin_data
