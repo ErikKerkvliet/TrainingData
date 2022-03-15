@@ -7,13 +7,13 @@ import http.client
 import json
 import time
 
-MODULI = [7, 255, 545, 1085, 2165]
+MODULI = [11, 255, 545, 1085, 2165]
 
 # How many steps to wait before calculating labels
-RESULT_TIME = 5
+RESULT_TIME = 10
 
 # Time to wait in loop for getting data
-TIMER = 80
+TIMER = 10
 
 class Ticker:
 
@@ -98,6 +98,9 @@ class Ticker:
         label_coin_data = {}
         from_index = length - RESULT_TIME
         for coin in self.coins.keys():
-            label_coin_data[coin] = self.coins[coin][from_index:]
+            label_coin_data[coin] = {
+                'start': self.coins[coin][from_index]['price'],
+                'end': self.coins[coin][-1]['price'],
+            }
 
         return label_coin_data
