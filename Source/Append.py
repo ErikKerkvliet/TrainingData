@@ -5,8 +5,35 @@ class Append:
 
     def __init__(self, glv):
         self.glv = glv
+        self.coins_data = None
+        self.counter = 0
+        self.modulo = 0
+        self.time = datetime.now().strftime('%d-%m-%Y %H:%M:%S')
 
     def actions(self, coins_data, modulo):
+        self.coins_data = coins_data
+        self.modulo = modulo
+        self.counter = 0
+        self.time = datetime.now().strftime('%d-%m-%Y %H:%M:%S')
+
+        self.label(self.glv.actions)
+
+    def label(self, actions, depth=1):
+        if depth == len(self.glv.coins):
+            return
+
+        for action in actions:
+            self.coins_data[self.glv.indexes[depth]][-1] = action
+
+            self.counter += 1
+            label = self.glv.label.calculate(self.coins_data)
+            filename = f"./Data/Images/{self.modulo}/{self.time}_{self.counter}_{label}"
+
+            Make.image(self.coins_data, filename)
+
+            self.label(actions, depth+1)
+
+    def actions2(self, coins_data, modulo):
         time = datetime.now().strftime('%d-%m-%Y %H:%M:%S')
         counter = 0
         for action0 in self.glv.actions:
@@ -39,6 +66,6 @@ class Append:
                                             label = self.glv.label.calculate(coins_data)
                                             filename = f"./Data/Images/{modulo}/{time}_{counter}_{label}"
 
-                                            Make.image(coins_data, filename)
+                                            # Make.image(coins_data, filename)
 
                                             counter += 1
