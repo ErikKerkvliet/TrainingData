@@ -1,4 +1,3 @@
-from Convert import Convert
 from Make import Make
 from datetime import datetime
 import Append
@@ -6,20 +5,22 @@ import Append
 import http.client
 import json
 import time
+import Convert
 
-MODULI = [11, 255, 545, 1085, 2165]
+MODULI = [30, 255, 545, 1085, 2165]
 
 # How many steps to wait before calculating labels
 RESULT_TIME = 10
 
 # Time to wait in loop for getting data
-TIMER = 10
+TIMER = 80
 
 class Ticker:
 
     def __init__(self, glv):
         self.glv = glv
         self.append = Append.Append(self.glv)
+        self.convert = Convert.Convert(self.glv)
         self.coins = {}
         self.time = ''
         self.coin_indexes = []
@@ -41,8 +42,13 @@ class Ticker:
                 print('Exception: disconnected. \n Reconnect')
                 connection = http.client.HTTPSConnection("api.bitpanda.com")
                 continue
-
-            coins_data = json.loads(data.decode("utf-8"))
+            except http.client.HTTPException:
+                connection = http.client.HTTPSConnection("api.bitpanda.com")
+                continue
+            response = json.loads(data.decode("utf-8"))
+            coins_data = self.convert.coin_order(response)
+            print(coins_data)
+            exit()
             if counter == 0:
                 counter += 1
                 print(f'Loop: {counter}')
@@ -73,7 +79,7 @@ class Ticker:
                     converted = []
                     for coin in coins_data.keys():
                         delimited = list(self.coins[coin][(counter - modulo):counter])
-                        converted.append(Convert.handle_coin(delimited))
+                        converted.append(self.convert.handle_coin(delimited))
                         if not converted[-1]:
                             del(converted[-1])
 

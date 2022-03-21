@@ -10,7 +10,7 @@ class Main:
     def __init__(self):
         self.glv = Globalvar.Globalvar()
         self.ticker = Ticker.Ticker(self.glv)
-        self.convert = Convert.Convert()
+        self.convert = Convert.Convert(self.glv)
         self.request = RequestData.RequestData()
         self.make = Make.Make()
         self.count = 0

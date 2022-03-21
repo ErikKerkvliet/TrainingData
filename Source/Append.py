@@ -37,8 +37,8 @@ class Append:
                                             coins_data[self.glv.indexes[8]][-1] = action8
 
                                             label = self.glv.label.calculate(coins_data)
-                                            filename = f"./Data/Images/{modulo}/_{time}_{counter}_{label}"
+                                            filename = f"./Data/Images/{modulo}/{time}_{counter}_{label}"
 
-                                            # Make.image(coins_data, filename)
+                                            Make.image(coins_data, filename)
 
                                             counter += 1

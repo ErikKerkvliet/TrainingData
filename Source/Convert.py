@@ -5,8 +5,9 @@ CURRENCY_PATH = '../Currencies'
 
 class Convert:
 
-    def __init__(self):
+    def __init__(self, glv):
         self.old_length = 0
+        self.glv = glv
 
     def image(self, coins_data):
         training_data = []
@@ -58,3 +59,14 @@ class Convert:
                 line_data[coin_data].append(data['price'])
 
         return line_data
+
+    def coin_order(self, coins_data):
+        active = {}
+        not_active = {}
+        for coin in coins_data.keys():
+            if coin in self.glv.coins:
+                active[coin] = coins_data[coin]
+            else:
+                not_active[coin] = coins_data[coin]
+
+        return {**active, **not_active}

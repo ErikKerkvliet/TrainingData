@@ -11,14 +11,15 @@ class Make:
         self.count = 0
 
     @staticmethod
-    def image(training_data, filename):
-        filename += '.png'
+    def image(training_data, filename=None):
         data = np.array(training_data, dtype=np.uint8)
 
         img = Img.fromarray(data, 'L')
 
         if filename is None:
             filename = f"./Data/Images/{datetime.now().strftime('%d-%m-%Y')}.png"
+        else:
+            filename += '.png'
 
         img.save(filename)
 

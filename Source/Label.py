@@ -28,8 +28,8 @@ class Label:
                     score -= 1
                     total -= final
 
-        print(score, total, coins1, coins2)
-        if total > 5:
+        if total > 5 and score > 0:
+            print(score, total, coins1, coins2)
             return 'yes'
         else:
             return 'no'
