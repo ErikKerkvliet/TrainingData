@@ -8,12 +8,13 @@ import time
 import Convert
 
 MODULI = [30, 255, 545, 1085, 2165]
+LABELS = ['yes', 'no']
 
 # How many steps to wait before calculating labels
 RESULT_TIME = 10
 
 # Time to wait in loop for getting data
-TIMER = 80
+TIMER = 20
 
 class Ticker:
 
@@ -24,7 +25,7 @@ class Ticker:
         self.coins = {}
         self.time = ''
         self.coin_indexes = []
-        Make.directories(MODULI)
+        Make.directories(LABELS)
 
     # Main function for getting data from cryptocurrency data from bitpanda
     def ticker(self):
@@ -47,8 +48,8 @@ class Ticker:
                 continue
             response = json.loads(data.decode("utf-8"))
             coins_data = self.convert.coin_order(response)
-            print(coins_data)
-            exit()
+            # print(coins_data)
+            # exit()
             if counter == 0:
                 counter += 1
                 print(f'Loop: {counter}')
