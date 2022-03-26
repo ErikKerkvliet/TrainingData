@@ -7,14 +7,15 @@ import json
 import time
 import Convert
 
-MODULI = [30, 255, 545, 1085, 2165]
+MODULI = [10, 255, 545, 1085, 2165]
 LABELS = ['yes', 'no']
 
 # How many steps to wait before calculating labels
-RESULT_TIME = 10
+RESULT_TIME = 5
 
 # Time to wait in loop for getting data
-TIMER = 20
+TIMER = 80
+
 
 class Ticker:
 
@@ -46,10 +47,9 @@ class Ticker:
             except http.client.HTTPException:
                 connection = http.client.HTTPSConnection("api.bitpanda.com")
                 continue
+
             response = json.loads(data.decode("utf-8"))
             coins_data = self.convert.coin_order(response)
-            # print(coins_data)
-            # exit()
             if counter == 0:
                 counter += 1
                 print(f'Loop: {counter}')

@@ -37,9 +37,6 @@ class Make:
 
         print(f'Saved file to {filename}')
 
-    def switch_count(self):
-        self.count = 2 if self.count == 1 else 1
-
     @staticmethod
     def directories(folders):
         if not path.isdir('./Data'):

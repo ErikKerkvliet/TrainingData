@@ -1,3 +1,6 @@
+from Action import Action
+
+
 class Label:
 
     def __init__(self, glv):
@@ -15,17 +18,16 @@ class Label:
             if index in self.glv.indexes:
                 final = self.coin_data[coin]['end'] - self.coin_data[coin]['start']
 
-                if data[index][-1] == 255 and final > 0.05:
+                if data[index][-1] == Action.BUY.value and final > 0.05:
                     total += final
                     coins1.append(coin)
-                elif data[index][-1] == 0 and final < -0.05:
+                elif data[index][-1] == Action.SELL.value and final < -0.05:
                     total += final
                     coins2.append(coin)
-                elif data[index][-1] != 127:
+                elif data[index][-1] != Action.NONE.value:
                     total -= -final if final < 0 else final
 
         if total > 3:
             return 'yes'
         else:
             return 'no'
-

@@ -1,6 +1,5 @@
 import math
-
-CURRENCY_PATH = '../Currencies'
+from Action import Action
 
 
 class Convert:
@@ -32,15 +31,15 @@ class Convert:
                 color = (255 + color) / 2
 
             if color > 255:
-                color = 255
+                color = Action.BUY.value
             elif color < 0:
-                color = 0
+                color = Action.SELL.value
 
             color = math.floor(color)
             line_data.append(color)
 
         # Add action value
-        line_data.append(127)
+        line_data.append(Action.NONE.value)
 
         length = len(line_data)
         if old_length == 0:
@@ -61,12 +60,11 @@ class Convert:
         return line_data
 
     def coin_order(self, coins_data):
-        active = {}
-        not_active = {}
+        coins = {}
         for coin in coins_data.keys():
             if coin in self.glv.coins:
-                active[coin] = coins_data[coin]
+                coins[coin] = coins_data[coin]
             else:
-                not_active[coin] = coins_data[coin]
+                coins[coin] = {'EUR': 1.0}
 
-        return {**active, **not_active}
+        return coins
