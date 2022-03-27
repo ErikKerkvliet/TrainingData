@@ -7,11 +7,11 @@ import json
 import time
 import Convert
 
-MODULI = [10, 255, 545, 1085, 2165]
+MODULI = [10]
 LABELS = ['yes', 'no']
 
 # How many steps to wait before calculating labels
-RESULT_TIME = 5
+RESULT_TIME = 10
 
 # Time to wait in loop for getting data
 TIMER = 80
@@ -47,6 +47,9 @@ class Ticker:
             except http.client.HTTPException:
                 connection = http.client.HTTPSConnection("api.bitpanda.com")
                 continue
+            except Exception:
+                print('Error')
+                continue
 
             response = json.loads(data.decode("utf-8"))
             coins_data = self.convert.coin_order(response)
@@ -76,7 +79,7 @@ class Ticker:
 
             self.time = datetime.now().strftime('%d-%m-%Y %H:%M:%S')
             for modulo in MODULI:
-                if counter % modulo == 0:
+                if counter >= 100 and counter % modulo == 0:
                     converted = []
                     for coin in coins_data.keys():
                         delimited = list(self.coins[coin][(counter - modulo):counter])
@@ -86,7 +89,6 @@ class Ticker:
 
                     self.glv.label.set_coin_data(self.get_label_coin_data(counter))
                     self.append.actions(converted, modulo)
-                    exit()
 
             if counter == 2160:
                 counter = 0

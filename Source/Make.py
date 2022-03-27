@@ -45,12 +45,6 @@ class Make:
         if not path.isdir('./Data/Images'):
             makedirs('./Data/Images')
 
-        if not path.isdir('./Data/Json'):
-            makedirs('./Data/Json')
-
         for folder in folders:
             if not path.isdir(f'./Data/Images/{folder}'):
                 makedirs(f'./Data/Images/{folder}')
-
-            if not path.isdir(f'./Data/Json/{folder}'):
-                makedirs(f'./Data/Json/{folder}')
