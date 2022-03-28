@@ -23,7 +23,7 @@ class Make:
 
         img.save(filename)
 
-        print(f'Saved image to {filename}')
+        # print(f'Saved image to {filename}')
 
     @staticmethod
     def json(training_data, filename):
@@ -48,3 +48,6 @@ class Make:
         for folder in folders:
             if not path.isdir(f'./Data/Images/{folder}'):
                 makedirs(f'./Data/Images/{folder}')
+
+            if not path.isdir(f'./Data/Images/_{folder}'):
+                makedirs(f'./Data/Images/_{folder}')

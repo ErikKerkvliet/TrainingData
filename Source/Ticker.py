@@ -1,5 +1,6 @@
 from Make import Make
 from datetime import datetime
+import Move
 import Append
 
 import http.client
@@ -23,6 +24,7 @@ class Ticker:
         self.glv = glv
         self.append = Append.Append(self.glv)
         self.convert = Convert.Convert(self.glv)
+        self.move = Move.Move(self.glv)
         self.coins = {}
         self.time = ''
         self.coin_indexes = []
@@ -89,6 +91,7 @@ class Ticker:
 
                     self.glv.label.set_coin_data(self.get_label_coin_data(counter))
                     self.append.actions(converted, modulo)
+                    self.move.move_files()
 
             if counter == 2160:
                 counter = 0
