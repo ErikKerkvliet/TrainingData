@@ -9,12 +9,10 @@ class Append:
         self.glv = glv
         self.coins_data = None
         self.counter = 0
-        self.modulo = 0
         self.time = datetime.now().strftime('%d-%m-%Y %H:%M:%S')
 
-    def actions(self, coins_data, modulo):
+    def actions(self, coins_data):
         self.coins_data = coins_data
-        self.modulo = modulo
         self.counter = 0
         self.time = datetime.now().strftime('%d-%m-%Y %H:%M:%S')
 

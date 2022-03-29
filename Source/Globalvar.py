@@ -10,7 +10,7 @@ class Globalvar:
         self.coins = [
             'XAU', 'BTC', 'ETH', 'USDT', 'BNB', 'XAG', 'USDC', 'XRP', 'ADA', 'LUNA', 'SOL', 'AVAX',
             'DOT', 'DOGE', 'XPD', 'SHIB', 'MATIC', 'LTC', 'NEAR', 'ATOM', 'XPT', 'LINK', 'UNI', 'BCH',
-            'FTT', 'TRX', 'ETC', 'ALGO', 'XLM','MANA', 'HBAR', 'AXS', 'ICP', 'EGLD', 'SAND', 'VET',
+            'FTT', 'TRX', 'ETC', 'ALGO', 'XLM', 'MANA', 'HBAR', 'AXS', 'ICP', 'EGLD', 'SAND', 'VET',
             'APE', 'FIL', 'WAVES', 'FTM', 'THETA', 'KLAY', 'XTZ', 'ZEC', 'EOS', 'FLOW', 'AAVE', 'MIOTA',
             'GRT', 'CAKE', 'MKR', 'BTT', 'ONE', 'STX', 'GALA', 'NEO', 'ENJ', 'LRC', 'DASH', 'KSM',
             'CELO', 'BAT', 'CHZ', 'CRV', 'MINA', 'AR', 'XEM', 'XYM', 'COMP', 'QTUM', 'YFI', 'OMG', 'RVN',

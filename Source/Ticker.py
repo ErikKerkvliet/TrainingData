@@ -9,10 +9,11 @@ import time
 import Convert
 
 MODULI = [10]
+WIDTH = 100
 LABELS = ['yes', 'no']
 
 # How many steps to wait before calculating labels
-RESULT_TIME = 10
+RESULT_TIME = 15
 
 # Time to wait in loop for getting data
 TIMER = 80
@@ -81,16 +82,16 @@ class Ticker:
 
             self.time = datetime.now().strftime('%d-%m-%Y %H:%M:%S')
             for modulo in MODULI:
-                if counter >= 100 and counter % modulo == 0:
+                if counter >= WIDTH and counter % modulo == 0:
                     converted = []
                     for coin in coins_data.keys():
-                        delimited = list(self.coins[coin][(counter - modulo):counter])
+                        delimited = list(self.coins[coin][(counter - WIDTH):counter])
                         converted.append(self.convert.handle_coin(delimited))
                         if not converted[-1]:
                             del(converted[-1])
 
                     self.glv.label.set_coin_data(self.get_label_coin_data(counter))
-                    self.append.actions(converted, modulo)
+                    self.append.actions(converted)
                     self.move.move_files()
 
             if counter == 2160:
