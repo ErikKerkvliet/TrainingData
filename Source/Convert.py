@@ -61,7 +61,7 @@ class Convert:
 
     def coin_order(self, coins_data):
         coins = {}
-        for coin in coins_data.keys():
+        for coin in self.glv.coins:
             if coin in self.glv.coins:
                 coins[coin] = coins_data[coin]
             else:

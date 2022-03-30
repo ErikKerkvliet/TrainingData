@@ -19,7 +19,7 @@ class Label:
                 if data[index][-1] == Action.BUY.value and final > 1.03:
                     print(f'    {final} - {coin}')
                     return '_yes'
-                if data[index][-1] == Action.SELL.value and final < -0.97:
+                if data[index][-1] == Action.SELL.value and final < -0.03:
                     print(f'    {final} - {coin}')
                     return '_yes'
         return '_no'
