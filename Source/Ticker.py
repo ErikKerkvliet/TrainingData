@@ -10,7 +10,7 @@ import Convert
 
 MODULI = [10]
 WIDTH = 100
-LABELS = ['yes', 'no']
+LABELS = ['yes_plus', 'yes_minus', 'no']
 
 # How many steps to wait before calculating labels
 RESULT_TIME = 15
