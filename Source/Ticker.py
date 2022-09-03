@@ -90,6 +90,8 @@ class Ticker:
                         if not converted[-1]:
                             del(converted[-1])
 
+                    converted.append(self.glv.get_extra_data(WIDTH))
+                    
                     self.glv.label.set_coin_data(self.get_label_coin_data(counter))
                     self.append.actions(converted)
                     self.move.move_files()

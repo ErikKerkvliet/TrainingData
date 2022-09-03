@@ -1,5 +1,6 @@
 import Label
 from Action import Action
+from datetime import datetime
 
 
 class Globalvar:
@@ -27,3 +28,13 @@ class Globalvar:
 
     def set_indexes(self, indexes):
         self.indexes = indexes
+
+    @staticmethod
+    def get_extra_data(width):
+        time = "%s-%s" % (datetime.today().weekday(), datetime.now().strftime('%d-%m-%y-%H-%M-%S'))
+        extra_data = time.split('-')
+
+        for i in range(7, width):
+            extra_data.append('255')
+
+        return list(map(int, extra_data))
