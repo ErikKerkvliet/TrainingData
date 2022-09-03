@@ -1,20 +1,24 @@
+from Action import Action
+
+
 class Label:
 
     def __init__(self, glv):
-        self.coin_data = []
+        self.coin_data = {}
         self.glv = glv
 
     def set_coin_data(self, coin_data):
         self.coin_data = coin_data
 
     def calculate(self, data):
-        base_total = 0
-        final_total = 0
-        for index, action in enumerate(self.coin_data):
+        for index, coin in enumerate(self.coin_data.keys()):
             if index in self.glv.indexes:
-                base_total += self.coin_data[action][0]['price']
-                final_total += self.coin_data[action][-1]['price']
-                    # exit()
-                # if data[-1] == 255:
-        print(final_total - base_total)
-        # exit()
+                percent = float(self.coin_data[coin]['end']) / float(self.coin_data[coin]['start'])
+                final = 1 * percent
+                if data[index][-1] == Action.BUY.value and final > 1.03:
+                    print(f'    {final} - {coin}')
+                    return 'yes_plus'
+                if data[index][-1] == Action.SELL.value and final < -0.03:
+                    print(f'    {final} - {coin}')
+                    return 'yes_minus'
+        return 'no'

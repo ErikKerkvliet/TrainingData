@@ -1,12 +1,12 @@
 import math
-
-CURRENCY_PATH = '../Currencies'
+from Action import Action
 
 
 class Convert:
 
-    def __init__(self):
+    def __init__(self, glv):
         self.old_length = 0
+        self.glv = glv
 
     def image(self, coins_data):
         training_data = []
@@ -31,15 +31,15 @@ class Convert:
                 color = (255 + color) / 2
 
             if color > 255:
-                color = 255
+                color = Action.BUY.value
             elif color < 0:
-                color = 0
+                color = Action.SELL.value
 
             color = math.floor(color)
             line_data.append(color)
 
         # Add action value
-        line_data.append(127)
+        line_data.append(Action.NONE.value)
 
         length = len(line_data)
         if old_length == 0:
@@ -58,3 +58,13 @@ class Convert:
                 line_data[coin_data].append(data['price'])
 
         return line_data
+
+    def coin_order(self, coins_data):
+        coins = {}
+        for coin in self.glv.coins:
+            if coin in self.glv.coins:
+                coins[coin] = coins_data[coin]
+            else:
+                coins[coin] = {'EUR': 1.0}
+
+        return coins

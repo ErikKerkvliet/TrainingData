@@ -11,18 +11,19 @@ class Make:
         self.count = 0
 
     @staticmethod
-    def image(training_data, filename):
-        filename += '.png'
+    def image(training_data, filename=None):
         data = np.array(training_data, dtype=np.uint8)
 
         img = Img.fromarray(data, 'L')
 
         if filename is None:
             filename = f"./Data/Images/{datetime.now().strftime('%d-%m-%Y')}.png"
+        else:
+            filename += '.png'
 
         img.save(filename)
 
-        print(f'Saved image to {filename}')
+        # print(f'Saved image to {filename}')
 
     @staticmethod
     def json(training_data, filename):
@@ -36,9 +37,6 @@ class Make:
 
         print(f'Saved file to {filename}')
 
-    def switch_count(self):
-        self.count = 2 if self.count == 1 else 1
-
     @staticmethod
     def directories(folders):
         if not path.isdir('./Data'):
@@ -47,12 +45,9 @@ class Make:
         if not path.isdir('./Data/Images'):
             makedirs('./Data/Images')
 
-        if not path.isdir('./Data/Json'):
-            makedirs('./Data/Json')
-
         for folder in folders:
             if not path.isdir(f'./Data/Images/{folder}'):
                 makedirs(f'./Data/Images/{folder}')
 
-            if not path.isdir(f'./Data/Json/{folder}'):
-                makedirs(f'./Data/Json/{folder}')
+            if not path.isdir(f'./Data/Images/_{folder}'):
+                makedirs(f'./Data/Images/_{folder}')
