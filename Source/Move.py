@@ -3,30 +3,20 @@ import random
 import os
 import shutil
 
-TEMP_DIRS = ['_yes', '_no']
-
 
 class Move:
 
     def __init__(self, glv):
-        self.g = glv
+        self.glv = glv
 
-    def move_files(self):
-        yes_files_plus = os.listdir('./Data/Images/_yes_plus')
-        yes_files_minus = os.listdir('./Data/Images/_yes_minus')
-        yes_files = yes_files_plus if len(yes_files_plus) < len(yes_files_minus) else yes_files_minus
-        folder_type = 'plus' if len(yes_files_plus) < len(yes_files_minus) else 'minus'
+    def move_files(self, labels):
+        for label in labels:
+            files = os.listdir(f'./Data/Images/temp/{label}')
 
-        no_files = os.listdir('./Data/Images/_no')
-        for yes_file in yes_files:
-            shutil.move(f'./Data/Images/_yes/{yes_file}', f'./Data/Images/yes/{yes_file}')
+            for file in files:
+                shutil.move(f'./Data/Images/temp/{label}/{file}', f'./Data/Images/{label}/{file}')
 
-        random_numbers = random.sample(range(len(yes_files)), len(yes_files))
-        for number in random_numbers:
-            shutil.move(f'./Data/Images/_no/{no_files[number]}', f'./Data/Images/no/{no_files[number]}')
-            shutil.move(f'./Data/Images/_yes_{folder_type}/{no_files[number]}', f'./Data/Images/no/{no_files[number]}')
-
-        self.empty_folder('./Data/Images/_no')
+            self.empty_folder(f'./Data/Images/temp/{label}')
 
     @staticmethod
     def count_files(directory):

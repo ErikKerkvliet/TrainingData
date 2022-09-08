@@ -49,5 +49,5 @@ class Make:
             if not path.isdir(f'./Data/Images/{folder}'):
                 makedirs(f'./Data/Images/{folder}')
 
-            if not path.isdir(f'./Data/Images/_{folder}'):
-                makedirs(f'./Data/Images/_{folder}')
+            if not path.isdir(f'./Data/Images/temp/{folder}'):
+                makedirs(f'./Data/Images/temp/{folder}')

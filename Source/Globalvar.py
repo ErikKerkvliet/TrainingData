@@ -34,7 +34,7 @@ class Globalvar:
         time = "%s-%s" % (datetime.today().weekday(), datetime.now().strftime('%d-%m-%y-%H-%M-%S'))
         extra_data = time.split('-')
 
-        for i in range(7, width):
+        for i in range(6, width):
             extra_data.append('255')
 
         return list(map(int, extra_data))
