@@ -7,8 +7,9 @@ from os import path, makedirs
 
 class Make:
 
-    def __init__(self):
+    def __init__(self, glv):
         self.count = 0
+        self.glv = glv
 
     @staticmethod
     def image(training_data, filename=None):
@@ -17,7 +18,7 @@ class Make:
         img = Img.fromarray(data, 'L')
 
         if filename is None:
-            filename = f"./Data/Images/{datetime.now().strftime('%d-%m-%Y')}.png"
+            filename = f"./Data/temp/{len(training_data[0])}/{datetime.now().strftime('%d-%m-%Y')}.png"
         else:
             filename += '.png'
 
@@ -37,17 +38,17 @@ class Make:
 
         print(f'Saved file to {filename}')
 
-    @staticmethod
-    def directories(folders):
+    def directories(self, folders):
         if not path.isdir('./Data'):
             makedirs('./Data')
 
-        if not path.isdir('./Data/Images'):
-            makedirs('./Data/Images')
+        width = len(self.glv.coins) + 1
+        if not path.isdir(f'./Data/Images_{width}'):
+            makedirs(f'./Data/Images_{width}')
 
         for folder in folders:
-            if not path.isdir(f'./Data/Images/{folder}'):
-                makedirs(f'./Data/Images/{folder}')
+            if not path.isdir(f'./Data/Images_{width}/{folder}'):
+                makedirs(f'./Data/Images_{width}/{folder}')
 
-            if not path.isdir(f'./Data/Images/temp/{folder}'):
-                makedirs(f'./Data/Images/temp/{folder}')
+            if not path.isdir(f'./Data/temp/{folder}'):
+                makedirs(f'./Data/temp/{folder}')

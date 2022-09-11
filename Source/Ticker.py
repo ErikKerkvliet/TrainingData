@@ -1,6 +1,6 @@
-from Make import Make
 from datetime import datetime
 import Move
+import Make
 import Append
 
 import http.client
@@ -8,8 +8,8 @@ import json
 import time
 import Convert
 
-MODULI = [10]
 LABELS = ['yes_plus', 'yes_minus', 'no']
+MODULI = [10]
 
 # How many steps to wait before calculating labels
 RESULT_TIME = 15
@@ -22,14 +22,16 @@ class Ticker:
 
     def __init__(self, glv):
         self.glv = glv
-        self.width = len(self.glv.coins) + 1
+        self.width = len(self.glv.coins)
+        self.result_time = 10 if self.width < 20 else 15  # After how many iterations does an image have to be made
         self.append = Append.Append(self.glv)
         self.convert = Convert.Convert(self.glv)
         self.move = Move.Move(self.glv)
+        self.make = Make.Make(self.glv)
         self.coins = {}
         self.time = ''
         self.coin_indexes = []
-        Make.directories(LABELS)
+        self.make.directories(LABELS)
 
     # Main function for getting data from cryptocurrency data from bitpanda
     def ticker(self):
@@ -90,9 +92,11 @@ class Ticker:
                         if not converted[-1]:
                             del(converted[-1])
 
-                    converted.append(self.glv.get_extra_data(self.width))
-                    
+                    converted.append(self.glv.get_extra_data(self.width, TIMER, self.result_time))
+
                     self.glv.label.set_coin_data(self.get_label_coin_data(counter))
+
+                    print('<<<<<<<<<<<< Generate images >>>>>>>>>>>>')
                     self.append.actions(converted)
                     self.move.move_files(LABELS)
 
@@ -111,7 +115,7 @@ class Ticker:
 
     def get_label_coin_data(self, length):
         label_coin_data = {}
-        from_index = length - RESULT_TIME
+        from_index = length - self.result_time
         for coin in self.coins.keys():
             label_coin_data[coin] = {
                 'start': self.coins[coin][from_index]['price'],

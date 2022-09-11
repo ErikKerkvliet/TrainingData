@@ -10,13 +10,14 @@ class Move:
         self.glv = glv
 
     def move_files(self, labels):
+        length = len(self.glv.coins) + 1
         for label in labels:
-            files = os.listdir(f'./Data/Images/temp/{label}')
+            files = os.listdir(f'./Data/temp/{label}')
 
             for file in files:
-                shutil.move(f'./Data/Images/temp/{label}/{file}', f'./Data/Images/{label}/{file}')
+                shutil.move(f'./Data/temp/{label}/{file}', f'./Data/Images_{length}/{label}/{file}')
 
-            self.empty_folder(f'./Data/Images/temp/{label}')
+            self.empty_folder(f'./Data/temp/{label}')
 
     @staticmethod
     def count_files(directory):
