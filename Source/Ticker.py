@@ -8,14 +8,11 @@ import json
 import time
 import Convert
 
-LABELS = ['yes_plus', 'yes_minus', 'no']
-MODULI = [10]
-
-# How many steps to wait before calculating labels
-RESULT_TIME = 15
-
 # Time to wait in loop for getting data
 TIMER = 80
+
+LABELS = ['yes_plus', 'yes_minus', 'no']
+MODULI = [10]
 
 
 class Ticker:
@@ -50,10 +47,11 @@ class Ticker:
                 connection = http.client.HTTPSConnection("api.bitpanda.com")
                 continue
             except http.client.HTTPException:
+                print('Exception: HTTP Exception. \n Reconnect')
                 connection = http.client.HTTPSConnection("api.bitpanda.com")
                 continue
             except Exception:
-                print('Error')
+                print('Exception: unknown error')
                 continue
 
             response = json.loads(data.decode("utf-8"))

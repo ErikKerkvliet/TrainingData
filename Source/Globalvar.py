@@ -18,7 +18,7 @@ class Globalvar:
             'STORJ', 'SRM', 'REN', 'FLUX', 'DGB', 'OCEAN', 'DYDX', 'LSK', 'BEST', 'COTI', 'ALICE',
             'RSR', 'ANT', 'OXT', 'BICO', 'REP', 'BAND', 'DUSK', 'KMD', 'BCI5', 'BCI10', 'BCI25', 'LUNA'
         ]
-        24
+
         # self.coins = ['BTC', 'ETH', 'BCH', 'BNB', 'EGLD', 'MKR', 'AAVE', 'KSM', 'YFI', 'XDB']
 
         # Grayscale values for actions        

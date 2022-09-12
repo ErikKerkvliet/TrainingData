@@ -1,4 +1,3 @@
-from Make import Make
 import random
 import os
 import shutil
@@ -14,8 +13,13 @@ class Move:
         for label in labels:
             files = os.listdir(f'./Data/temp/{label}')
 
+            random.shuffle(files)
+
+            moves = 0
             for file in files:
-                shutil.move(f'./Data/temp/{label}/{file}', f'./Data/Images_{length}/{label}/{file}')
+                if moves < 10:
+                    shutil.move(f'./Data/temp/{label}/{file}', f'./Data/Images_{length}/{label}/{file}')
+                    moves += 1
 
             self.empty_folder(f'./Data/temp/{label}')
 
