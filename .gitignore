@@ -3,5 +3,5 @@ bin/
 lib/
 *.pyc
 .idea/
-Data/
+data/
 share/

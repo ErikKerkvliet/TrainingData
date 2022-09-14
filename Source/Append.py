@@ -8,12 +8,10 @@ class Append:
     def __init__(self, glv):
         self.glv = glv
         self.coins_data = None
-        self.counter = 0
         self.time = datetime.now().strftime('%d-%m-%Y %H:%M:%S')
 
     def actions(self, coins_data):
         self.coins_data = coins_data
-        self.counter = 0
         self.time = datetime.now().strftime('%d-%m-%Y %H:%M:%S')
 
         self.label(self.glv.actions)
@@ -25,9 +23,10 @@ class Append:
         for action in actions:
             self.coins_data[self.glv.indexes[depth]][-1] = action
 
-            self.counter += 1
             label = self.glv.label.calculate(self.coins_data)
-            filename = f"./Data/temp/{label}/{self.time}_{self.counter}"
+            action_label = 'sell' if action == 127 else 'buy'
+
+            filename = f"./data/temp/{label}/{self.time}_{self.glv.coins[self.glv.indexes[depth]]}_{action_label}"
 
             Make.image(self.coins_data, filename)
 

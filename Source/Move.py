@@ -11,17 +11,17 @@ class Move:
     def move_files(self, labels):
         length = len(self.glv.coins) + 1
         for label in labels:
-            files = os.listdir(f'./Data/temp/{label}')
+            files = os.listdir(f'./data/temp/{label}')
 
             random.shuffle(files)
 
             moves = 0
             for file in files:
-                if moves < 10:
-                    shutil.move(f'./Data/temp/{label}/{file}', f'./Data/Images_{length}/{label}/{file}')
+                if moves < 20:
+                    shutil.move(f'./data/temp/{label}/{file}', f'./data/images_{length}/{label}/{file}')
                     moves += 1
 
-            self.empty_folder(f'./Data/temp/{label}')
+            self.empty_folder(f'./data/temp/{label}')
 
     @staticmethod
     def count_files(directory):

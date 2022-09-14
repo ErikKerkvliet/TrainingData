@@ -18,7 +18,7 @@ class Make:
         img = Img.fromarray(data, 'L')
 
         if filename is None:
-            filename = f"./Data/temp/{len(training_data[0])}/{datetime.now().strftime('%d-%m-%Y')}.png"
+            filename = f"./data/temp/{len(training_data[0])}/{datetime.now().strftime('%d-%m-%Y')}.png"
         else:
             filename += '.png'
 
@@ -39,16 +39,10 @@ class Make:
         print(f'Saved file to {filename}')
 
     def directories(self, folders):
-        if not path.isdir('./Data'):
-            makedirs('./Data')
-
         width = len(self.glv.coins) + 1
-        if not path.isdir(f'./Data/Images_{width}'):
-            makedirs(f'./Data/Images_{width}')
-
         for folder in folders:
-            if not path.isdir(f'./Data/Images_{width}/{folder}'):
-                makedirs(f'./Data/Images_{width}/{folder}')
+            if not path.isdir(f'./data/images_{width}/{folder}'):
+                makedirs(f'./data/images_{width}/{folder}')
 
-            if not path.isdir(f'./Data/temp/{folder}'):
-                makedirs(f'./Data/temp/{folder}')
+            if not path.isdir(f'./data/temp/{folder}'):
+                makedirs(f'./data/temp/{folder}')

@@ -36,6 +36,7 @@ class Ticker:
         headers = {'Accept': "application/json"}
 
         counter = 0
+        error = False
         while True:
             try:
                 connection.request("GET", "/v1/ticker", headers=headers)
@@ -50,10 +51,15 @@ class Ticker:
                 print('Exception: HTTP Exception. \n Reconnect')
                 connection = http.client.HTTPSConnection("api.bitpanda.com")
                 continue
-            except Exception:
-                print('Exception: unknown error')
+            except Exception as e:
+                if error:
+                    return False
+
+                error = True
+                print(f'Exception: {e}')
                 continue
 
+            error = False
             response = json.loads(data.decode("utf-8"))
             coins_data = self.convert.coin_order(response)
             if counter == 0:
