@@ -13,16 +13,17 @@ class Main:
         return self.ticker.ticker()
 
 
-main = Main()
 error = ''
-try:
-    if not main.start():
-        error = 'with error '
-    Move.empty_folder(f'./data/temp/')
-except KeyboardInterrupt:
-    print('Exception: Keyboard interrupt')
-except BaseException as e:
-    print(f'Exception: {e}')
+if __name__ == '__main__':
+    main = Main()
+    try:
+        if not main.start():
+            error = 'with error '
+        Move.empty_folder(f'./data/temp/')
+    except KeyboardInterrupt:
+        print('Exception: Keyboard interrupt')
+    except BaseException as e:
+        print(f'Exception: {e}')
 
 print(f'============= Finished {error}=============')
 print('Shutting down')

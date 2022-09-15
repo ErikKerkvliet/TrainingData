@@ -8,7 +8,7 @@ class Append:
     def __init__(self, glv):
         self.glv = glv
         self.coins_data = None
-        self.time = datetime.now().strftime('%d-%m-%Y %H:%M:%S')
+        self.time = ''
 
     def actions(self, coins_data):
         self.coins_data = coins_data
@@ -24,11 +24,37 @@ class Append:
             self.coins_data[self.glv.indexes[depth]][-1] = action
 
             label = self.glv.label.calculate(self.coins_data)
-            action_label = 'sell' if action == 127 else 'buy'
 
-            filename = f"./data/temp/{label}/{self.time}_{self.glv.coins[self.glv.indexes[depth]]}_{action_label}"
+            filename = f"./data/temp/{label}/{self.time}_{self.glv.coins[self.glv.indexes[depth]]}"
 
             Make.image(self.coins_data, filename)
 
         self.coins_data[self.glv.indexes[depth]][-1] = Action.NONE.value
         self.label(actions, depth+1)
+
+    def add_extra_data(self, coin_data, width, timer, result_time):
+        time = "%s-%s" % (datetime.today().weekday(), datetime.now().strftime('%d-%m-%y-%H-%M-%S'))
+        extra_data = time.split('-')
+        extra_data.append(timer)
+        extra_data.append(result_time)
+
+        for i in range(9, width):
+            extra_data.append('0')
+
+        coin_data.append(list(map(int, extra_data)))
+
+        coin_data = self.add_filler(coin_data, width)
+
+        return coin_data
+
+    @staticmethod
+    def add_filler(coin_data, width):
+        filler_height = width - len(coin_data)
+
+        filler = []
+        for i in range(width):
+            filler.append(0)
+
+        for i in range(filler_height):
+            coin_data.append(filler)
+        return coin_data

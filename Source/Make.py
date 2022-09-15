@@ -38,8 +38,7 @@ class Make:
 
         print(f'Saved file to {filename}')
 
-    def directories(self, folders):
-        width = len(self.glv.coins) + 1
+    def directories(self, folders, width):
         for folder in folders:
             if not path.isdir(f'./data/images_{width}/{folder}'):
                 makedirs(f'./data/images_{width}/{folder}')

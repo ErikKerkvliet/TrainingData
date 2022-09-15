@@ -14,10 +14,10 @@ class Label:
         for index, coin in enumerate(self.coin_data.keys()):
             if index in self.glv.indexes:
                 final = float(self.coin_data[coin]['end']) / float(self.coin_data[coin]['start'])
-                if data[index][-1] == Action.BUY.value and final > 1.017:
+                if data[index][-1] == Action.BUY.value and final > 1.03:
                     print(f'    {final} - {coin} - yes_plus')
                     return 'yes_plus'
-                if data[index][-1] == Action.SELL.value and final < 0.983:
+                if data[index][-1] == Action.SELL.value and final < 0.97:
                     print(f'    {final} - {coin} - yes_minus')
                     return 'yes_minus'
         return 'no'

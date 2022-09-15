@@ -8,8 +8,12 @@ class Move:
     def __init__(self, glv):
         self.glv = glv
 
-    def move_files(self, labels):
-        length = len(self.glv.coins) + 1
+    def move_files(self, labels, width):
+        max_moves = 1
+        for label in ['yes_minus', 'yes_plus']:
+            files = os.listdir(f'./data/temp/{label}')
+            max_moves = len(files) if len(files) > max_moves else max_moves
+
         for label in labels:
             files = os.listdir(f'./data/temp/{label}')
 
@@ -17,8 +21,8 @@ class Move:
 
             moves = 0
             for file in files:
-                if moves < 20:
-                    shutil.move(f'./data/temp/{label}/{file}', f'./data/images_{length}/{label}/{file}')
+                if moves < max_moves:
+                    shutil.move(f'./data/temp/{label}/{file}', f'./data/images_{width}/{label}/{file}')
                     moves += 1
 
             self.empty_folder(f'./data/temp/{label}')

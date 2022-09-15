@@ -1,4 +1,3 @@
-from datetime import datetime
 import Move
 import Make
 import Append
@@ -13,22 +12,22 @@ TIMER = 80
 
 LABELS = ['yes_plus', 'yes_minus', 'no']
 MODULI = [10]
+IMAGE_WIDTH = 224  # Image width. 224 X 224
+WIDTH = 223  # Image width without action columns. 223 X 223
+RESULT_TIME = 20  # After how many iterations to look back to calculate the labels
 
 
 class Ticker:
 
     def __init__(self, glv):
         self.glv = glv
-        self.width = len(self.glv.coins)
-        self.result_time = 10 if self.width < 20 else 15  # After how many iterations does an image have to be made
         self.append = Append.Append(self.glv)
         self.convert = Convert.Convert(self.glv)
         self.move = Move.Move(self.glv)
         self.make = Make.Make(self.glv)
         self.coins = {}
-        self.time = ''
         self.coin_indexes = []
-        self.make.directories(LABELS)
+        self.make.directories(LABELS, RESULT_TIME)
 
     # Main function for getting data from cryptocurrency data from bitpanda
     def ticker(self):
@@ -86,23 +85,22 @@ class Ticker:
                 }
                 self.coins[coin].append(coin_dat)
 
-            self.time = datetime.now().strftime('%d-%m-%Y %H:%M:%S')
             for modulo in MODULI:
-                if counter >= self.width and counter % modulo == 0:
+                if counter >= WIDTH and counter % modulo == 0:
                     converted = []
                     for coin in coins_data.keys():
-                        delimited = list(self.coins[coin][(counter - self.width):counter])
+                        delimited = list(self.coins[coin][(counter - WIDTH):counter])
                         converted.append(self.convert.handle_coin(delimited))
                         if not converted[-1]:
                             del(converted[-1])
 
-                    converted.append(self.glv.get_extra_data(self.width, TIMER, self.result_time))
+                    converted = self.append.add_extra_data(converted, IMAGE_WIDTH, TIMER, RESULT_TIME)
 
                     self.glv.label.set_coin_data(self.get_label_coin_data(counter))
 
                     print('<<<<<<<<<<<< Generate images >>>>>>>>>>>>')
                     self.append.actions(converted)
-                    self.move.move_files(LABELS)
+                    self.move.move_files(LABELS, RESULT_TIME)
 
             if counter == 2160:
                 counter = 0
@@ -119,7 +117,7 @@ class Ticker:
 
     def get_label_coin_data(self, length):
         label_coin_data = {}
-        from_index = length - self.result_time
+        from_index = length - RESULT_TIME
         for coin in self.coins.keys():
             label_coin_data[coin] = {
                 'start': self.coins[coin][from_index]['price'],
