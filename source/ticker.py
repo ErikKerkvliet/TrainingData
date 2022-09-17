@@ -1,11 +1,11 @@
-import Move
-import Make
-import Append
+from move import Move
+from make import Make
+from append import Append
+from convert import Convert
 
 import http.client
 import json
 import time
-import Convert
 
 # Time to wait in loop for getting data
 TIMER = 80
@@ -21,13 +21,14 @@ class Ticker:
 
     def __init__(self, glv):
         self.glv = glv
-        self.append = Append.Append(self.glv)
-        self.convert = Convert.Convert(self.glv)
-        self.move = Move.Move(self.glv)
-        self.make = Make.Make(self.glv)
+        self.append = Append(self.glv)
+        self.convert = Convert(self.glv)
+        self.move = Move(self.glv)
+        self.make = Make(self.glv)
         self.coins = {}
         self.coin_indexes = []
-        self.make.directories(LABELS, RESULT_TIME)
+        self.glv.set_result_time(RESULT_TIME)
+        self.make.directories(LABELS)
 
     # Main function for getting data from cryptocurrency data from bitpanda
     def ticker(self):
@@ -35,7 +36,6 @@ class Ticker:
         headers = {'Accept': "application/json"}
 
         counter = 0
-        error = False
         while True:
             try:
                 connection.request("GET", "/v1/ticker", headers=headers)
@@ -50,15 +50,7 @@ class Ticker:
                 print('Exception: HTTP Exception. \n Reconnect')
                 connection = http.client.HTTPSConnection("api.bitpanda.com")
                 continue
-            except Exception as e:
-                if error:
-                    return False
 
-                error = True
-                print(f'Exception: {e}')
-                continue
-
-            error = False
             response = json.loads(data.decode("utf-8"))
             coins_data = self.convert.coin_order(response)
             if counter == 0:
@@ -79,11 +71,11 @@ class Ticker:
 
             for coin in coins_data.keys():
                 price = float(coins_data[coin]['EUR'])
-                coin_dat = {
+                data = {
                     'price': float(coins_data[coin]['EUR']),
                     'difference': self.coins[coin][-1]['price'] - price,
                 }
-                self.coins[coin].append(coin_dat)
+                self.coins[coin].append(data)
 
             for modulo in MODULI:
                 if counter >= WIDTH and counter % modulo == 0:
@@ -94,13 +86,19 @@ class Ticker:
                         if not converted[-1]:
                             del(converted[-1])
 
-                    converted = self.append.add_extra_data(converted, IMAGE_WIDTH, TIMER, RESULT_TIME)
+                    extra_data = {
+                        'image_width': IMAGE_WIDTH,
+                        'timer': TIMER,
+                        'result_time': RESULT_TIME,
+                    }
+
+                    converted = self.append.add_extra_data(converted, extra_data)
 
                     self.glv.label.set_coin_data(self.get_label_coin_data(counter))
 
                     print('<<<<<<<<<<<< Generate images >>>>>>>>>>>>')
                     self.append.actions(converted)
-                    self.move.move_files(LABELS, RESULT_TIME)
+                    self.move.move_files(LABELS)
 
             if counter == 2160:
                 counter = 0

@@ -1,6 +1,5 @@
-import Label
-from Action import Action
-from datetime import datetime
+from label import Label
+from action import Action
 
 
 class Globalvar:
@@ -25,7 +24,11 @@ class Globalvar:
         self.actions = [Action.SELL.value, Action.BUY.value]
 
         self.indexes = []
-        self.label = Label.Label(self)
+        self.label = Label(self)
+        self.result_time = 0
+
+    def set_result_time(self, time):
+        self.result_time = time
 
     def set_indexes(self, indexes):
         self.indexes = indexes

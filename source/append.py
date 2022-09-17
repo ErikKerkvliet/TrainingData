@@ -1,12 +1,13 @@
-from Make import Make
+from make import Make
 from datetime import datetime
-from Action import Action
+from action import Action
 
 
 class Append:
 
     def __init__(self, glv):
         self.glv = glv
+        self.make = Make(glv)
         self.coins_data = None
         self.time = ''
 
@@ -24,26 +25,26 @@ class Append:
             self.coins_data[self.glv.indexes[depth]][-1] = action
 
             label = self.glv.label.calculate(self.coins_data)
+            coin = self.glv.coins[self.glv.indexes[depth]]
+            filename = f"./data/images_{self.glv.result_time}/temp/{label}/{self.time}_{coin}"
 
-            filename = f"./data/temp/{label}/{self.time}_{self.glv.coins[self.glv.indexes[depth]]}"
-
-            Make.image(self.coins_data, filename)
+            self.make.image(self.coins_data, filename)
 
         self.coins_data[self.glv.indexes[depth]][-1] = Action.NONE.value
         self.label(actions, depth+1)
 
-    def add_extra_data(self, coin_data, width, timer, result_time):
+    def add_extra_data(self, coin_data, data):
         time = "%s-%s" % (datetime.today().weekday(), datetime.now().strftime('%d-%m-%y-%H-%M-%S'))
         extra_data = time.split('-')
-        extra_data.append(timer)
-        extra_data.append(result_time)
+        extra_data.append(data['timer'])
+        extra_data.append(data['result_time'])
 
-        for i in range(9, width):
-            extra_data.append('0')
+        for i in range(len(extra_data), data['image_width']):
+            extra_data.append(Action.NONE.value)
 
         coin_data.append(list(map(int, extra_data)))
 
-        coin_data = self.add_filler(coin_data, width)
+        coin_data = self.add_filler(coin_data, data['image_width'])
 
         return coin_data
 

@@ -1,13 +1,12 @@
-import Ticker
-import Globalvar
-from Move import Move
+from ticker import Ticker
+from globalvar import Globalvar
 
 
 class Main:
 
     def __init__(self):
-        self.glv = Globalvar.Globalvar()
-        self.ticker = Ticker.Ticker(self.glv)
+        self.glv = Globalvar()
+        self.ticker = Ticker(self.glv)
 
     def start(self):
         return self.ticker.ticker()
@@ -17,13 +16,11 @@ error = ''
 if __name__ == '__main__':
     main = Main()
     try:
-        if not main.start():
-            error = 'with error '
-        Move.empty_folder(f'./data/temp/')
+        main.start()
     except KeyboardInterrupt:
         print('Exception: Keyboard interrupt')
-    except BaseException as e:
-        print(f'Exception: {e}')
+        error = 'with error '
+
 
 print(f'============= Finished {error}=============')
 print('Shutting down')

@@ -8,17 +8,19 @@ from os import path, makedirs
 class Make:
 
     def __init__(self, glv):
-        self.count = 0
         self.glv = glv
 
-    @staticmethod
-    def image(training_data, filename=None):
+    def image(self, training_data, filename=None):
         data = np.array(training_data, dtype=np.uint8)
 
         img = Img.fromarray(data, 'L')
 
         if filename is None:
-            filename = f"./data/temp/{len(training_data[0])}/{datetime.now().strftime('%d-%m-%Y')}.png"
+            result_time = self.glv.result_time
+            image_width = len(training_data[0])
+            date = datetime.now().strftime('%d-%m-%Y')
+
+            filename = f"./data/images_{self.glv.result_time}/temp/{result_time}/{image_width}/{date}.png"
         else:
             filename += '.png'
 
@@ -38,10 +40,10 @@ class Make:
 
         print(f'Saved file to {filename}')
 
-    def directories(self, folders, width):
+    def directories(self, folders):
         for folder in folders:
-            if not path.isdir(f'./data/images_{width}/{folder}'):
-                makedirs(f'./data/images_{width}/{folder}')
+            if not path.isdir(f'./data/images_{self.glv.result_time}/{folder}'):
+                makedirs(f'./data/images_{self.glv.result_time}/{folder}')
 
-            if not path.isdir(f'./data/temp/{folder}'):
-                makedirs(f'./data/temp/{folder}')
+            if not path.isdir(f'./data/images_{self.glv.result_time}/temp/{folder}'):
+                makedirs(f'./data/images_{self.glv.result_time}/temp/{folder}')
