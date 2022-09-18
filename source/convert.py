@@ -8,13 +8,6 @@ class Convert:
         self.old_length = 0
         self.glv = glv
 
-    def image(self, coins_data):
-        training_data = []
-        for coin_data in coins_data:
-            coin_data = self.handle_coin(coins_data[coin_data])
-            training_data.append(coin_data)
-        return training_data
-
     @staticmethod
     def handle_coin(coin_data):
         line_data = []

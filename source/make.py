@@ -20,7 +20,7 @@ class Make:
             image_width = len(training_data[0])
             date = datetime.now().strftime('%d-%m-%Y')
 
-            filename = f"./data/images_{self.glv.result_time}/temp/{result_time}/{image_width}/{date}.png"
+            filename = f"../data/images_{self.glv.result_time}/temp/{result_time}/{image_width}/{date}.png"
         else:
             filename += '.png'
 
@@ -42,8 +42,8 @@ class Make:
 
     def directories(self, folders):
         for folder in folders:
-            if not path.isdir(f'./data/images_{self.glv.result_time}/{folder}'):
-                makedirs(f'./data/images_{self.glv.result_time}/{folder}')
+            if not path.isdir(f'../data/images_{self.glv.result_time}/{folder}'):
+                makedirs(f'../data/images_{self.glv.result_time}/{folder}')
 
-            if not path.isdir(f'./data/images_{self.glv.result_time}/temp/{folder}'):
-                makedirs(f'./data/images_{self.glv.result_time}/temp/{folder}')
+            if not path.isdir(f'../data/images_{self.glv.result_time}/temp/{folder}'):
+                makedirs(f'../data/images_{self.glv.result_time}/temp/{folder}')

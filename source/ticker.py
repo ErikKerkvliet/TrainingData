@@ -84,6 +84,7 @@ class Ticker:
                         delimited = list(self.coins[coin][(counter - WIDTH):counter])
                         converted.append(self.convert.handle_coin(delimited))
                         if not converted[-1]:
+                            self.glv.set_price(self.coins[coin][-1]['price'])
                             del(converted[-1])
 
                     extra_data = {

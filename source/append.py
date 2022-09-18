@@ -26,7 +26,7 @@ class Append:
 
             label = self.glv.label.calculate(self.coins_data)
             coin = self.glv.coins[self.glv.indexes[depth]]
-            filename = f"./data/images_{self.glv.result_time}/temp/{label}/{self.time}_{coin}"
+            filename = f"../data/images_{self.glv.result_time}/temp/{label}/{self.time}_{coin}"
 
             self.make.image(self.coins_data, filename)
 
@@ -38,6 +38,13 @@ class Append:
         extra_data = time.split('-')
         extra_data.append(data['timer'])
         extra_data.append(data['result_time'])
+        extra_data.append('255')
+
+        price_string = str(self.glv.price)
+        for char in price_string:
+            if char == '.':
+                char = '255'
+            extra_data.append(char)
 
         for i in range(len(extra_data), data['image_width']):
             extra_data.append(Action.NONE.value)
