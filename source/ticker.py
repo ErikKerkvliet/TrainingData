@@ -30,6 +30,12 @@ class Ticker:
         self.glv.set_result_time(RESULT_TIME)
         self.make.directories(LABELS)
 
+        self.glv.set_extra_data({
+            'image_width': IMAGE_WIDTH,
+            'timer': TIMER,
+            'result_time': RESULT_TIME,
+        })
+
     # Main function for getting data from cryptocurrency data from bitpanda
     def ticker(self):
         connection = http.client.HTTPSConnection("api.bitpanda.com")
@@ -83,17 +89,11 @@ class Ticker:
                     for coin in coins_data.keys():
                         delimited = list(self.coins[coin][(counter - WIDTH):counter])
                         converted.append(self.convert.handle_coin(delimited))
+                        self.glv.add_price(self.coins[coin][-1]['price'])
                         if not converted[-1]:
-                            self.glv.set_price(self.coins[coin][-1]['price'])
                             del(converted[-1])
 
-                    extra_data = {
-                        'image_width': IMAGE_WIDTH,
-                        'timer': TIMER,
-                        'result_time': RESULT_TIME,
-                    }
-
-                    converted = self.append.add_extra_data(converted, extra_data)
+                    converted = self.append.add_filler(converted, IMAGE_WIDTH)
 
                     self.glv.label.set_coin_data(self.get_label_coin_data(counter))
 

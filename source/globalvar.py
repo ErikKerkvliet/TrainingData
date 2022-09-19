@@ -14,10 +14,17 @@ class Globalvar:
         self.indexes = []
         self.label = Label(self)
         self.result_time = 0
-        self.price = 0.0
+        self.extra_data = {}
+        self.prices = []
 
-    def set_price(self, price):
-        self.price = price
+    def set_extra_data(self, extra_data):
+        self.extra_data = extra_data
+
+    def get_price(self, nr) -> float:
+        return self.prices[nr]
+
+    def add_price(self, price):
+        self.prices.append(price)
 
     def set_result_time(self, time):
         self.result_time = time
