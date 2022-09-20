@@ -27,13 +27,13 @@ class Ticker:
         self.make = Make(self.glv)
         self.coins = {}
         self.coin_indexes = []
-        self.glv.set_result_time(RESULT_TIME)
+        self.result_time = self.glv.get_result_time()
         self.make.directories(LABELS)
 
         self.glv.set_extra_data({
             'image_width': IMAGE_WIDTH,
             'timer': TIMER,
-            'result_time': RESULT_TIME,
+            'result_time': self.result_time,
         })
 
     # Main function for getting data from cryptocurrency data from bitpanda
@@ -116,7 +116,7 @@ class Ticker:
 
     def get_label_coin_data(self, length):
         label_coin_data = {}
-        from_index = length - RESULT_TIME
+        from_index = length - self.result_time
         for coin in self.coins.keys():
             label_coin_data[coin] = {
                 'start': self.coins[coin][from_index]['price'],

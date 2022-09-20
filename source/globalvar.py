@@ -17,6 +17,12 @@ class Globalvar:
         self.extra_data = {}
         self.prices = []
 
+    def set_result_time(self, result_time) -> None:
+        self.result_time = result_time
+
+    def get_result_time(self) -> int:
+        return self.result_time
+
     def set_extra_data(self, extra_data):
         self.extra_data = extra_data
 
@@ -25,9 +31,6 @@ class Globalvar:
 
     def add_price(self, price):
         self.prices.append(price)
-
-    def set_result_time(self, time):
-        self.result_time = time
 
     def set_indexes(self, indexes):
         self.indexes = indexes
