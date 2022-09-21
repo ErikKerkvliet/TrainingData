@@ -60,7 +60,7 @@ class Append:
 
     @staticmethod
     def add_filler(coin_data, width):
-        filler_height = width - len(coin_data)
+        filler_height = (width - 1) - len(coin_data)
 
         filler = []
         for i in range(width):
