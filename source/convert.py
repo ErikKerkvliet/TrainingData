@@ -1,5 +1,7 @@
 import math
+
 from action import Action
+from globalvar import DEFAULT_CURRENCY
 
 
 class Convert:
@@ -58,6 +60,6 @@ class Convert:
             if coin in self.glv.coins:
                 coins[coin] = coins_data[coin]
             else:
-                coins[coin] = {'EUR': 1.0}
+                coins[coin] = {DEFAULT_CURRENCY: 1.0}
 
         return coins

@@ -1,6 +1,7 @@
 from make import Make
 from datetime import datetime
 from action import Action
+from globalvar import ACTIONS
 
 
 class Append:
@@ -15,7 +16,7 @@ class Append:
         self.coins_data = coins_data
         self.time = datetime.now().strftime('%d-%m-%Y %H:%M:%S')
 
-        self.label(self.glv.actions)
+        self.label(ACTIONS)
 
     def label(self, actions, depth=1):
         if depth == len(self.glv.coins):

@@ -16,11 +16,11 @@ class Make:
         img = Img.fromarray(data, 'L')
 
         if filename is None:
-            result_time = self.glv.result_time
+            result_time = self.glv.get_result_time()
             image_width = len(training_data[0])
             date = datetime.now().strftime('%d-%m-%Y')
 
-            filename = f"../data/images_{self.glv.result_time}/temp/{result_time}/{image_width}/{date}.png"
+            filename = f"../data/images_{result_time}/temp/{result_time}/{image_width}/{date}.png"
         else:
             filename += '.png'
 
@@ -41,9 +41,10 @@ class Make:
         print(f'Saved file to {filename}')
 
     def directories(self, folders):
+        result_time = self.glv.get_result_time()
         for folder in folders:
-            if not path.isdir(f'../data/images_{self.glv.result_time}/{folder}'):
-                makedirs(f'../data/images_{self.glv.result_time}/{folder}')
+            if not path.isdir(f'../data/images_{result_time}/{folder}'):
+                makedirs(f'../data/images_{result_time}/{folder}')
 
-            if not path.isdir(f'../data/images_{self.glv.result_time}/temp/{folder}'):
-                makedirs(f'../data/images_{self.glv.result_time}/temp/{folder}')
+            if not path.isdir(f'../data/images_{result_time}/temp/{folder}'):
+                makedirs(f'../data/images_{result_time}/temp/{folder}')

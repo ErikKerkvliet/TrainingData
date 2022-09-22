@@ -2,19 +2,16 @@ from move import Move
 from make import Make
 from append import Append
 from convert import Convert
+from globalvar import DEFAULT_CURRENCY
 
 import http.client
 import json
 import time
 
-# Time to wait in loop for getting data
-TIMER = 80
-
+TIMER = 80  # Time to wait in loop for getting data
 LABELS = ['yes_plus', 'yes_minus', 'no']
-MODULI = [10]
 IMAGE_WIDTH = 224  # Image width. 224 X 224
 WIDTH = 223  # Image width without action columns. 223 X 223
-RESULT_TIME = 20  # After how many iterations to look back to calculate the labels
 
 
 class Ticker:
@@ -65,7 +62,7 @@ class Ticker:
                 time.sleep(TIMER)
                 for coin in coins_data.keys():
                     self.coins[coin] = [{
-                        'price': float(coins_data[coin]['EUR']),
+                        'price': float(coins_data[coin][DEFAULT_CURRENCY]),
                         'difference': 0
                     }]
 
@@ -76,30 +73,29 @@ class Ticker:
             print(f'Loop: {counter}')
 
             for coin in coins_data.keys():
-                price = float(coins_data[coin]['EUR'])
+                price = float(coins_data[coin][DEFAULT_CURRENCY])
                 data = {
-                    'price': float(coins_data[coin]['EUR']),
+                    'price': float(coins_data[coin][DEFAULT_CURRENCY]),
                     'difference': self.coins[coin][-1]['price'] - price,
                 }
                 self.coins[coin].append(data)
 
-            for modulo in MODULI:
-                if counter >= WIDTH and counter % modulo == 0:
-                    converted = []
-                    for coin in coins_data.keys():
-                        delimited = list(self.coins[coin][(counter - WIDTH):counter])
-                        converted.append(self.convert.handle_coin(delimited))
-                        self.glv.add_price(self.coins[coin][-1]['price'])
-                        if not converted[-1]:
-                            del(converted[-1])
+            if counter >= WIDTH and counter % self.result_time == 0:
+                converted = []
+                for coin_key in coins_data.keys():
+                    delimited = list(self.coins[coin_key][(counter - WIDTH):counter])
+                    converted.append(self.convert.handle_coin(delimited))
+                    self.glv.add_price(self.coins[coin_key][-1]['price'])
+                    if not converted[-1]:
+                        del(converted[-1])
 
-                    converted = self.append.add_filler(converted, IMAGE_WIDTH)
+                converted = self.append.add_filler(converted, IMAGE_WIDTH)
 
-                    self.glv.label.set_coin_data(self.get_label_coin_data(counter))
+                self.glv.label.set_coin_data(self.get_label_coin_data(counter))
 
-                    print('<<<<<<<<<<<< Generate images >>>>>>>>>>>>')
-                    self.append.actions(converted)
-                    self.move.move_files(LABELS)
+                print('<<<<<<<<<<<< Generate images >>>>>>>>>>>>')
+                self.append.actions(converted)
+                self.move.move_files(LABELS)
 
             if counter == 2160:
                 counter = 0

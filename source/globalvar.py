@@ -1,16 +1,17 @@
 from label import Label
 from action import Action
 
+DEFAULT_CURRENCY = 'EUR'
+
+# Grayscale values for actions
+ACTIONS = [Action.SELL.value, Action.BUY.value]
+
 
 class Globalvar:
 
     def __init__(self):
         # Coins to which actions are being added
         self.coins = self.currencies()
-
-        # Grayscale values for actions        
-        self.actions = [Action.SELL.value, Action.BUY.value]
-
         self.indexes = []
         self.label = Label(self)
         self.result_time = 0
