@@ -6,8 +6,9 @@ import sys
 
 class Main:
 
-    def __init__(self, result_time=20):
+    def __init__(self, result_time=20, currencies=1):
         self.glv = Globalvar()
+        self.glv.set_currencies(currencies)
         self.glv.set_result_time(result_time)
         self.ticker = Ticker(self.glv)
 
@@ -20,6 +21,8 @@ if __name__ == '__main__':
 
     if len(sys.argv) == 2:
         main = Main(int(sys.argv[1]))
+    elif len(sys.argv) == 3:
+        main = Main(int(sys.argv[1]), int(sys.argv[2]))
     else:
         main = Main()
     try:

@@ -53,6 +53,10 @@ class Ticker:
                 print('Exception: HTTP Exception. \n Reconnect')
                 connection = http.client.HTTPSConnection("api.bitpanda.com")
                 continue
+            except ConnectionResetError:
+                print('Exception: connection reset error. \n Reconnect')
+                connection = http.client.HTTPSConnection("api.bitpanda.com")
+                continue
 
             response = json.loads(data.decode("utf-8"))
             coins_data = self.convert.coin_order(response)
